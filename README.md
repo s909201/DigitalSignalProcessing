@@ -12,6 +12,7 @@
 # Revision History
 - 20200514 : add FIR_filter_example.py
 - 20200514 : add FIR_filter_Morgan.py and example data ActrosV8Idle.h
+- 20200515 : add pyWave.py for playing sound via Python
 
 
 
