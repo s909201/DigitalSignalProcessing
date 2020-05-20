@@ -25,9 +25,33 @@ plt.grid()
 plt.show()
 """
 # ---------------------------------------------------------------
+# scipy.signal.lfilter
+# Filter data along one-dimension with an IIR or FIR filter.
+# Filter a data sequence, x, using a digital filter. This works for many fundamental data types (including Object type). 
+# The filter is a direct form II transposed implementation of the standard difference equation (see Notes).
+# The function sosfilt (and filter design using output='sos') should be preferred over lfilter for most filtering tasks, as second-order sections have fewer numerical problems.
+# Link: https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.lfilter.html?highlight=lfilter
+t = np.linspace(-1, 1, 201) # array
+x = (np.sin(2*np.pi*0.75*t*(1-t) + 2.1) + 0.1*np.sin(2*np.pi*1.25*t + 1) + 0.18*np.cos(2*np.pi*3.85*t))
+xn = x + np.random.randn(len(t)) * 0.08
+print("type(x)=", type(x))
+print("type(xn)=", type(xn))
+b, a = signal.butter(3, 0.05)
+zi = signal.lfilter_zi(b, a)
+z, _ = signal.lfilter(b, a, xn, zi=zi * xn[0])
+z2, _ = signal.lfilter(b, a, z, zi=zi*z[0])
+zi = signal.lfilter_zi(b, a)
+y = signal.filtfilt(b, a, xn)
+plt.plot(t, xn, 'b', alpha=0.75)
+plt.plot(t, z, 'r--', t, z2, 'r', t, y, 'k')
+plt.legend(('noisy signal', 'lfilter, once', 'lfilter, twice','filtfilt'), loc='best')
+plt.grid(True)
+plt.show()
+# ---------------------------------------------------------------
 # scipy.signal.iirfilter
 # Design an Nth-order digital or analog filter and return the filter coefficients.
 # Link: https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.iirfilter.html
+"""
 b, a = signal.iirfilter(17, [50, 200], rs=60, btype="band", analog=True, ftype="cheby2")
 w, h = signal.freqs(b, a, 1000)
 fig = plt.figure()
@@ -40,6 +64,7 @@ ax.set_ylabel("Amplitude [dB]")
 ax.axis((10, 1000, -100, 10))
 ax.grid(which="both", axis="both")
 plt.show()
+"""
 # ---------------------------------------------------------------
 # butter, cheby1, cheby2, ellip, bessel: Filter design using order and critical points
 # ---------------------------------------------------------------
@@ -56,6 +81,24 @@ plt.ylabel('Amplitude [dB]')
 plt.margins(0, 0.1)
 plt.grid(which='both', axis='both')
 plt.axvline(100, color='green') # cutoff frequency
+plt.show()
+"""
+# ---------------------------------------------------------------
+# High pass filter example:
+"""
+t = np.linspace(0, 1, 1000, False)  # 1 second
+sig = np.sin(2*np.pi*10*t) + np.sin(2*np.pi*20*t)
+fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
+ax1.plot(t, sig)
+ax1.set_title('10 Hz and 20 Hz sinusoids')
+ax1.axis([0, 1, -2, 2])
+sos = signal.butter(10, 15, 'hp', fs=1000, output='sos')
+filtered = signal.sosfilt(sos, sig)
+ax2.plot(t, filtered)
+ax2.set_title('After 15 Hz high-pass filter')
+ax2.axis([0, 1, -2, 2])
+ax2.set_xlabel('Time [seconds]')
+plt.tight_layout()
 plt.show()
 """
 # ---------------------------------------------------------------
