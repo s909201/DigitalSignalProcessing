@@ -5,6 +5,26 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.ticker
 # ---------------------------------------------------------------
+# scipy.signal.freqs(b, a, worN=200, plot=None)
+# Compute frequency response of analog filter.
+# Given the M-order numerator b and N-order denominator a of an analog filter, compute its frequency response:
+#         b[0]*(jw)**M + b[1]*(jw)**(M-1) + ... + b[M]
+# H(w) = ----------------------------------------------
+#         a[0] * (jw)**N + a[1] * (jw)**(N - 1) + ... +a[N]
+"""
+from scipy.signal import freqs, iirfilter
+
+b, a = iirfilter(4, [1, 10], 1, 60, analog=True, ftype="cheby1")
+w, h = freqs(b, a, worN=np.logspace(-1, 2, 1000))
+import matplotlib.pyplot as plt
+
+plt.semilogx(w, 20 * np.log10(abs(h)))
+plt.xlabel("Frequency")
+plt.ylabel("Amplitude response [dB]")
+plt.grid()
+plt.show()
+"""
+# ---------------------------------------------------------------
 # scipy.signal.iirfilter
 # Design an Nth-order digital or analog filter and return the filter coefficients.
 # Link: https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.iirfilter.html
