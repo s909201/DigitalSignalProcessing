@@ -18,6 +18,4 @@
 - 20200525 : add test environment picture - env.jpg
 
 # Environment
-
-
-
+![Environment](https://github.com/s909201/DigitalSignalProcessing/blob/master/env.jpg)
